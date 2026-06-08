@@ -1,0 +1,21 @@
+#ifndef LIGHTGRAPH_VERSION_H
+#define LIGHTGRAPH_VERSION_H
+
+#define LIGHTGRAPH_VERSION_MAJOR @PROJECT_VERSION_MAJOR@
+#define LIGHTGRAPH_VERSION_MINOR @PROJECT_VERSION_MINOR@
+#define LIGHTGRAPH_VERSION_PATCH @PROJECT_VERSION_PATCH@
+
+#define LIGHTGRAPH_VERSION_STR "@PROJECT_VERSION@"
+
+namespace graphstore {
+
+struct Version {
+    static constexpr int Major = @PROJECT_VERSION_MAJOR@;
+    static constexpr int Minor = @PROJECT_VERSION_MINOR@;
+    static constexpr int Patch = @PROJECT_VERSION_PATCH@;
+    static constexpr const char* String = "@PROJECT_VERSION@";
+};
+
+} // namespace graphstore
+
+#endif // LIGHTGRAPH_VERSION_H

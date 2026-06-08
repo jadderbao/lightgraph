@@ -21,6 +21,10 @@ set(SOURCES
     src/cypher_parser.cpp
 )
 
+# 版本头文件（由 CMake 从模板生成）
+set(VERSION_HEADER_IN include/version.h.in)
+configure_file(${VERSION_HEADER_IN} include/version.h)
+
 # 头文件
 set(HEADERS
     include/common.h
@@ -29,6 +33,7 @@ set(HEADERS
     include/graph_store.h
     include/serializer.h
     include/cypher_parser.h
+    ${VERSION_HEADER_IN}
 )
 
 # 静态库
@@ -38,6 +43,7 @@ add_library(LightGraph STATIC
 )
 target_include_directories(LightGraph PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
@@ -55,6 +61,10 @@ install(TARGETS LightGraph
 install(DIRECTORY include/
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
     FILES_MATCHING PATTERN "*.h"
+    PATTERN "*.h.in" EXCLUDE
+)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/include/version.h
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 install(TARGETS db_admin cypher_parser
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
