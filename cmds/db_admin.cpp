@@ -6,11 +6,16 @@
 #include <iomanip>
 #include "graph_store.h"
 #include "cypher_parser.h"
+#include "version.h"
 
 using namespace graphstore;
 
+static void print_version() {
+    std::cout << "LightGraph v" << Version::String << std::endl;
+}
+
 static void print_help() {
-    std::cout << "Graph Database Admin Tool" << std::endl;
+    std::cout << "Graph Database Admin Tool v" << Version::String << std::endl;
     std::cout << "Usage: db_admin <command> [args...]" << std::endl;
     std::cout << std::endl;
     std::cout << "Commands:" << std::endl;
@@ -115,7 +120,7 @@ static void cmd_query(const std::string& path, const std::string& cypher) {
 static void cmd_repl(const std::string& path) {
     GraphStore db;
     if (!open_db(db, path)) return;
-    std::cout << "GraphDB REPL — type 'exit' or 'quit' to quit, 'help' for help" << std::endl;
+    std::cout << "GraphDB REPL v" << Version::String << " — type 'exit' or 'quit' to quit, 'help' for help" << std::endl;
     std::string line;
     while (true) {
         std::cout << "> ";
@@ -206,6 +211,10 @@ int main(int argc, char* argv[]) {
     std::string cmd = argv[1];
     if (cmd == "help" || cmd == "--help" || cmd == "-h") {
         print_help();
+        return 0;
+    }
+    if (cmd == "--version" || cmd == "-V") {
+        print_version();
         return 0;
     }
     if (cmd == "init") {
