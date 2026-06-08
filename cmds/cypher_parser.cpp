@@ -4,11 +4,16 @@
 #include <sstream>
 #include "cypher_parser.h"
 #include "graph_store.h"
+#include "version.h"
 
 using namespace graphstore;
 
+static void print_version() {
+    std::cout << "LightGraph v" << Version::String << std::endl;
+}
+
 static void print_help() {
-    std::cout << "Cypher Parser CLI Tool" << std::endl;
+    std::cout << "Cypher Parser CLI Tool v" << Version::String << std::endl;
     std::cout << "Usage: cypher_parser <path>               Open database in interactive shell" << std::endl;
     std::cout << "       cypher_parser <command> [args...]" << std::endl;
     std::cout << std::endl;
@@ -481,7 +486,7 @@ static void cmd_repl(const std::string& init_path) {
         shell_open(db, has_db, init_path);
     }
 
-    std::cout << "Cypher Parser Interactive Shell" << std::endl;
+    std::cout << "Cypher Parser Interactive Shell v" << Version::String << std::endl;
     std::cout << "Commands: .open <path>  .close  .exit  .help  .tables  .tokenize  .parse" << std::endl;
     std::string line;
 
@@ -614,7 +619,8 @@ static void cmd_repl(const std::string& init_path) {
 int main(int argc, char* argv[]) {
     auto is_cmd = [](const std::string& s) {
         return s == "tokenize" || s == "parse" || s == "exec" || s == "repl"
-            || s == "help" || s == "--help" || s == "-h";
+            || s == "help" || s == "--help" || s == "-h"
+            || s == "--version" || s == "-V";
     };
 
     if (argc < 2) {
@@ -632,6 +638,11 @@ int main(int argc, char* argv[]) {
 
     if (first == "help" || first == "--help" || first == "-h") {
         print_help();
+        return 0;
+    }
+
+    if (first == "--version" || first == "-V") {
+        print_version();
         return 0;
     }
 
